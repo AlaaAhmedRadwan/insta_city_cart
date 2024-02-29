@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../app_localizations.dart';
+import 'package:insta_city_cart/cart_screen/data/remote/app_localizations.dart';
 
 
   Widget cartAppBarContainer(BuildContext context) {

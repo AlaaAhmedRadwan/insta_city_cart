@@ -4,15 +4,17 @@ class CartResponse {
 
   CartResponse({required this.carts, required this.totalOrder});
 
+
   factory CartResponse.fromJson(Map<String, dynamic> json) {
     var cartList = json['carts'] as List;
     List<Cart> cartsList = cartList.map((cart) => Cart.fromJson(cart)).toList();
 
     return CartResponse(
       carts: cartsList,
-      totalOrder: json['totalOrder'],
+      totalOrder: json['totalOrder'], // Use 'totalorder' instead of 'totalOrder'
     );
   }
+
 }
 
 

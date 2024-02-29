@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:insta_city_cart/cart_screen/presentation/CartScreen.dart';
 
-import 'app_localizations.dart';
+import 'package:insta_city_cart/cart_screen/data/remote/app_localizations.dart';
 
 void main() {
   runApp(
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CartScreen(),
+      home: const CartScreen(),
     );
   }
 }

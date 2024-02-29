@@ -81,7 +81,7 @@ class VendorProductItemView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12.0),
-                const Text('1'),
+                 Text(item.amount.toString()),
                 const SizedBox(width: 12.0),
                 Container(
                   width: 20.0,
