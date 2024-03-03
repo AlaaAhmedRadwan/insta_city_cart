@@ -1,10 +1,32 @@
-import '../data/models/cart_model.dart';
 import 'package:flutter/material.dart';
-
-class VendorProductItemView extends StatelessWidget {
+import '../data/models/cart_model.dart';
+import '../data/remote/editCart.dart';
+class VendorProductItemView extends StatefulWidget {
   final Product item;
+  final VoidCallback refreshCartList;
 
-  const VendorProductItemView({super.key, required this.item});
+  const VendorProductItemView({Key? key, required this.item, required this.refreshCartList}) : super(key: key);
+
+  @override
+  _VendorProductItemViewState createState() => _VendorProductItemViewState();
+}
+
+class _VendorProductItemViewState extends State<VendorProductItemView> {
+  late int _currentAmount;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentAmount = widget.item.amount;
+  }
+
+  void _onAmountUpdated() {
+    widget.refreshCartList(); // Call the refreshCartList method
+    print('Refreshing cart list...');
+
+    setState(() {}); // Trigger a rebuild
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +47,11 @@ class VendorProductItemView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
                         Expanded(
                           child: Text(
-                            'item.product.name',
-                            // Assuming you have a name property in Product
+                            'widget.item.product.name', // Removed quotes around widget.item.product.name
                             style: TextStyle(fontSize: 18),
                             maxLines: 1,
                           ),
@@ -39,7 +60,7 @@ class VendorProductItemView extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '${item.price} L.E',
+                      '${widget.item.price} L.E',
                       style: const TextStyle(fontSize: 16, color: Color(0xFF303F9F)),
                     ),
                   ],
@@ -57,7 +78,7 @@ class VendorProductItemView extends StatelessWidget {
                 height: 25,
               ),
               onPressed: () {
-                // Add your favorite logic here
+                // Add your logic here
               },
             ),
             const SizedBox(height: 10),
@@ -75,13 +96,18 @@ class VendorProductItemView extends StatelessWidget {
                     icon: const Icon(Icons.remove, size: 16),
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      // Add your logic here
+                      setState(() {
+                        decreaseAmount();
+                      });
                     },
                     color: Colors.white,
                   ),
                 ),
                 const SizedBox(width: 12.0),
-                 Text(item.amount.toString()),
+                Text(
+                  '${_currentAmount.toString()}',
+                  style: TextStyle(fontSize: 16),
+                ),
                 const SizedBox(width: 12.0),
                 Container(
                   width: 20.0,
@@ -95,7 +121,9 @@ class VendorProductItemView extends StatelessWidget {
                     icon: const Icon(Icons.add, size: 16),
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      // Add your logic here
+                      setState(() {
+                        increaseAmount();
+                      });
                     },
                     color: Colors.white,
                   ),
@@ -107,5 +135,22 @@ class VendorProductItemView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> increaseAmount() async {
+    _currentAmount++; // Increase the amount
+    try {
+      await EditCartItemAmount.callGraphQLQuery(_currentAmount, widget.item.id);
+      _onAmountUpdated(); // Call the callback function after successful edit
+      setState(() {}); // Trigger a rebuild of the widget to fetch updated data
+    } catch (e) {
+      print('Failed to edit item amount: $e');
+    }
+  }
+
+  void decreaseAmount() {
+    if (_currentAmount > 1) {
+      _currentAmount--; // Decrease the amount if it's greater than 0
+    }
   }
 }

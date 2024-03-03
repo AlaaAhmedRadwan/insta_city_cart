@@ -5,13 +5,17 @@ import 'VendorProductItem.dart';
 
 class VendorItemView extends StatelessWidget {
   final Cart vendor;
+  final void Function() refreshCartList;
 
-  const VendorItemView({super.key, required this.vendor});
+  const VendorItemView(
+      {Key? key, required this.vendor, required this.refreshCartList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity, // Set a fixed width to avoid exceeding available width
+      width: double.infinity,
+      // Set a fixed width to avoid exceeding available width
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 4.0,
@@ -61,7 +65,8 @@ class VendorItemView extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: vendor.products
-                      .map((item) => VendorProductItemView(item: item))
+                      .map((item) => VendorProductItemView(
+                          item: item, refreshCartList: refreshCartList))
                       .toList(),
                 ),
               ),

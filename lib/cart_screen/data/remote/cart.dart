@@ -10,9 +10,9 @@ abstract class BasicCartRemoteDataSource {
 }
 
 class CartRemoteDataSource implements BasicCartRemoteDataSource {
-
   @override
   Future<Map<String, dynamic>> getCartList() async {
+
     final url = Uri.parse(ApiConstant.url);
     var body = jsonEncode({
       "code": "12",
@@ -32,7 +32,7 @@ class CartRemoteDataSource implements BasicCartRemoteDataSource {
       print(responseData);
       return <String, dynamic>{
         'carts': List<Map<String, dynamic>>.from(responseData['carts']),
-        'totalOrder': responseData['totalOrder'],
+        "totalOrder": responseData['totalOrder'],
       };
 
     } else {

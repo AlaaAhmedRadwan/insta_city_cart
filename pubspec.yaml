@@ -43,6 +43,7 @@ dependencies:
   http:
   intl:
   hive:
+  graphql_flutter: ^5.0.0
   hive_flutter:
 dev_dependencies:
   flutter_test:
