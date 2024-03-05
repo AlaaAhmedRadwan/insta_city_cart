@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insta_city_cart/cart_screen/presentation/CartScreen.dart';
 
 import 'package:insta_city_cart/cart_screen/data/remote/app_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
       const ProviderScope(
         child: MyApp(),

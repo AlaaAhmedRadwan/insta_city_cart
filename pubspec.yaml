@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  fluttertoast:  ^8.0.9  # Make sure you use the latest version or a version that works with your Flutter SDK
   flutter_localizations:
     sdk: flutter
 

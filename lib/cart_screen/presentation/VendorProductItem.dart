@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insta_city_cart/cart_screen/data/models/cart_model.dart';
 import 'package:insta_city_cart/cart_screen/data/remote/deleteCartItem.dart';
 import '../data/remote/editCart.dart';
@@ -151,7 +152,15 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
     try {
       widget.removeItem(widget.item); // Call the callback function to remove the item
       await DeleteCartItem.callGraphQLQuery(_currentAmount, widget.item.id);
-      print('Deleted');
+
+      Fluttertoast.showToast(
+        msg: "ITEM HAS DELETED",
+        toastLength: Toast.LENGTH_SHORT, // Duration for which the toast should be visible
+        gravity: ToastGravity.BOTTOM, // Location where the toast should appear
+        backgroundColor: Colors.grey, // Background color of the toast
+        textColor: Colors.white, // Text color of the toast
+        fontSize: 16.0, // Font size of the toast message
+      );
       widget.refreshCartList(); // Call the refreshCartList method
       setState(() {}); // Trigger a rebuild of the widget to fetch updated data
     } catch (e) {
@@ -159,6 +168,7 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
     }
   }
   Future<void> increaseAmount() async {
+
     _currentAmount++; // Increase the amount
     try {
       await EditCartItemAmount.callGraphQLQuery(_currentAmount, widget.item.id);
