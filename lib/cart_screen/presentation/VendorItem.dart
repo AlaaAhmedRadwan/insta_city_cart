@@ -6,16 +6,19 @@ import 'VendorProductItem.dart';
 class VendorItemView extends StatelessWidget {
   final Cart vendor;
   final void Function() refreshCartList;
+  final Function(Product) removeItem;
 
-  const VendorItemView(
-      {Key? key, required this.vendor, required this.refreshCartList})
-      : super(key: key);
+  const VendorItemView({
+    Key? key,
+    required this.vendor,
+    required this.refreshCartList,
+    required this.removeItem,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      // Set a fixed width to avoid exceeding available width
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 4.0,
@@ -29,7 +32,6 @@ class VendorItemView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Vendor Logo and Name
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -50,7 +52,6 @@ class VendorItemView extends StatelessWidget {
                 ),
               ],
             ),
-            // Grey Line
             Container(
               margin: const EdgeInsets.symmetric(
                 vertical: 8.0,
@@ -58,16 +59,23 @@ class VendorItemView extends StatelessWidget {
               height: 1.0,
               color: Colors.grey,
             ),
-            // List of Items
             SizedBox(
               height: 150,
-              // Set the height of the inner ListView
               child: SingleChildScrollView(
                 child: Column(
-                  children: vendor.products
-                      .map((item) => VendorProductItemView(
-                          item: item, refreshCartList: refreshCartList))
-                      .toList(),
+                  children: vendor.products.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final item = entry.value;
+                    return VendorProductItemView(
+                      item: item,
+                      refreshCartList: refreshCartList,
+                      removeItem: (Product product) {
+                        removeItem(product);
+                        print('item deleted');
+
+                      },
+                    );
+                  }).toList(),
                 ),
               ),
             ),
@@ -75,5 +83,5 @@ class VendorItemView extends StatelessWidget {
         ),
       ),
     );
-  }
-}
+
+  }}

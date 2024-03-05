@@ -11,7 +11,7 @@ class CartResponse {
 
     return CartResponse(
       carts: cartsList,
-      totalOrder: json['totalOrder'], // Use 'totalorder' instead of 'totalOrder'
+      totalOrder: json['totalOrder'],
     );
   }
 
@@ -30,7 +30,7 @@ class Cart {
     required this.vendorName,
     required this.products,
     required this.id,
-    required this.order,
+    required this.order, // Add this named parameter
   });
 
   factory Cart.fromJson(Map<String, dynamic> json) {
@@ -43,7 +43,7 @@ class Cart {
       vendorName: json['vendorName'],
       products: productsList,
       id: json['id'],
-      order: Order.fromJson(json['order']),
+      order: Order.fromJson(json['order']), // Provide the 'order' argument here
     );
   }
 }

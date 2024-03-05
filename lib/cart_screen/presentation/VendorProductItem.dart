@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import '../data/models/cart_model.dart';
+import 'package:insta_city_cart/cart_screen/data/models/cart_model.dart';
+import 'package:insta_city_cart/cart_screen/data/remote/deleteCartItem.dart';
 import '../data/remote/editCart.dart';
+
 class VendorProductItemView extends StatefulWidget {
   final Product item;
   final VoidCallback refreshCartList;
 
-  const VendorProductItemView({Key? key, required this.item, required this.refreshCartList}) : super(key: key);
+  final Function(Product) removeItem; // Adjusted type here
+
+  const VendorProductItemView({
+    Key? key,
+    required this.item,
+    required this.refreshCartList,
+    required this.removeItem,
+  }) : super(key: key);
 
   @override
   _VendorProductItemViewState createState() => _VendorProductItemViewState();
@@ -23,10 +32,8 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
   void _onAmountUpdated() {
     widget.refreshCartList(); // Call the refreshCartList method
     print('Refreshing cart list...');
-
     setState(() {}); // Trigger a rebuild
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +67,11 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '${widget.item.price} L.E',
-                      style: const TextStyle(fontSize: 16, color: Color(0xFF303F9F)),
+                      '${widget.item.price * _currentAmount} L.E',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF303F9F),
+                      ),
                     ),
                   ],
                 ),
@@ -78,7 +88,7 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
                 height: 25,
               ),
               onPressed: () {
-                // Add your logic here
+                deleteItem();
               },
             ),
             const SizedBox(height: 10),
@@ -137,6 +147,17 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
     );
   }
 
+  Future<void> deleteItem() async {
+    try {
+      widget.removeItem(widget.item); // Call the callback function to remove the item
+      await DeleteCartItem.callGraphQLQuery(_currentAmount, widget.item.id);
+      print('Deleted');
+      widget.refreshCartList(); // Call the refreshCartList method
+      setState(() {}); // Trigger a rebuild of the widget to fetch updated data
+    } catch (e) {
+      print('Failed to delete item: $e');
+    }
+  }
   Future<void> increaseAmount() async {
     _currentAmount++; // Increase the amount
     try {
@@ -148,9 +169,27 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
     }
   }
 
-  void decreaseAmount() {
+  Future<void> decreaseAmount() async {
     if (_currentAmount > 1) {
       _currentAmount--; // Decrease the amount if it's greater than 0
+      try {
+        await EditCartItemAmount.callGraphQLQuery(
+          _currentAmount,
+          widget.item.id,
+        );
+        _onAmountUpdated(); // Call the callback function after successful edit
+        setState(() {}); // Trigger a rebuild of the widget to fetch updated data
+      } catch (e) {
+        print('Failed to edit item amount: $e');
+      }
+    }
+  }
+
+  Future<void> fetchUpdatedTotalPrice() async {
+    try {
+      widget.refreshCartList(); // Call the callback function to refresh the cart list
+    } catch (e) {
+      print('Failed to fetch updated total price: $e');
     }
   }
 }

@@ -46,4 +46,26 @@ class GetCartListNotifier extends StateNotifier<CartResponse> {
       return Left(ServerFailure(message: failure.errorMessageModel.message));
     }
   }
+
+  void removeProductFromCart(Cart vendor, Product product) {
+    final updatedCarts = state.carts.map((cart) {
+      if (cart == vendor) {
+        return Cart(
+          id: cart.id,
+          vendorName: cart.vendorName,
+          products: List.of(cart.products)..remove(product),
+          order: cart.order, // Pass the 'order' parameter here
+          vendorId: cart.vendorId, // Pass the 'vendorId' parameter here
+        );
+      } else {
+        return cart;
+      }
+    }).toList();
+
+    state = CartResponse(
+      carts: updatedCarts,
+      totalOrder: state.totalOrder,
+    );
+  }
+
 }

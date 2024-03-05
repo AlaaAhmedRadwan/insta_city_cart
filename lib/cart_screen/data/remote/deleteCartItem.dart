@@ -3,13 +3,13 @@ import 'package:graphql/client.dart';
 
 import '../../core/network/api_constant.dart';
 
-abstract class EditCartItemAmount extends StatelessWidget {
-  const EditCartItemAmount({super.key});
+abstract class DeleteCartItem extends StatelessWidget {
+  const DeleteCartItem({super.key});
   static Future<void> callGraphQLQuery(int amount, int id) async {
     // Define your GraphQL query string with variables
     const String editQuery = '''
     query {
-      carts(Function: "Edit") {
+      carts(Function: "Delete") {
         id
         amount
       }
