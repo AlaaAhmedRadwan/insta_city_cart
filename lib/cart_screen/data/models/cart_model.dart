@@ -19,14 +19,12 @@ class CartResponse {
 
 
 class Cart {
-  int vendorId;
   String vendorName;
   List<Product> products;
   int id;
   Order order;
 
   Cart({
-    required this.vendorId,
     required this.vendorName,
     required this.products,
     required this.id,
@@ -39,7 +37,6 @@ class Cart {
     productList.map((product) => Product.fromJson(product)).toList();
 
     return Cart(
-      vendorId: json['vendor_id'],
       vendorName: json['vendorName'],
       products: productsList,
       id: json['id'],

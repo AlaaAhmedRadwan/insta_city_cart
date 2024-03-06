@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../data/models/cart_model.dart';
 import 'VendorProductItem.dart';
 
-class VendorItemView extends StatelessWidget {
+class VendorItemView extends StatefulWidget {
   final Cart vendor;
   final void Function() refreshCartList;
-  final Function(Product) removeItem;
+  final Function(Product, int) removeItem; // Pass the index along with the item
 
   const VendorItemView({
     Key? key,
@@ -15,6 +15,11 @@ class VendorItemView extends StatelessWidget {
     required this.removeItem,
   }) : super(key: key);
 
+  @override
+  _VendorItemViewState createState() => _VendorItemViewState();
+}
+
+class _VendorItemViewState extends State<VendorItemView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -47,7 +52,7 @@ class VendorItemView extends StatelessWidget {
                 ),
                 const SizedBox(width: 8.0),
                 Text(
-                  vendor.vendorName,
+                  widget.vendor.vendorName,
                   style: const TextStyle(fontSize: 18),
                 ),
               ],
@@ -61,27 +66,33 @@ class VendorItemView extends StatelessWidget {
             ),
             SizedBox(
               height: 150,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: vendor.products.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final item = entry.value;
-                    return VendorProductItemView(
-                      item: item,
-                      refreshCartList: refreshCartList,
-                      removeItem: (Product product) {
-                        removeItem(product);
-                        print('item deleted');
-
-                      },
-                    );
-                  }).toList(),
-                ),
+              child: ListView(
+                children: widget.vendor.products.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  return buildProductItem(item, index);
+                }).toList(),
               ),
             ),
           ],
         ),
       ),
     );
+  }
 
-  }}
+  Widget buildProductItem(Product item, int index) {
+    return VendorProductItemView(
+      item: item,
+      refreshCartList: widget.refreshCartList,
+      removeItem: (item) {
+        widget.removeItem(item, index); // Pass the index
+        final updatedProducts = List.of(widget.vendor.products); // Create a copy of the list
+        setState(() {
+          updatedProducts.removeAt(index); // Remove the item from the copied list
+          widget.vendor.products = updatedProducts; // Update the state with the modified list
+        });
+        print('Item deleted at index $index');
+      },
+    );
+  }
+}

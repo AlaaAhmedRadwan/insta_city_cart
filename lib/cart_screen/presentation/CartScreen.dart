@@ -63,13 +63,7 @@ class CartScreen extends StatelessWidget {
                               return VendorItemView(
                                 vendor: vendor,
                                 refreshCartList:
-                                    ref.read(refreshNotifier.notifier).refresh,
-                                  removeItem: (Product product) {
-                                    ref
-                                        .read(getCartListNotifierProvider.notifier)
-                                        .removeProductFromCart(vendor, product);
-                                    ref.read(refreshNotifier.notifier).refresh();
-                                  },
+                                    ref.read(refreshNotifier.notifier).refresh, removeItem: (Product , int ) {  },
                               );
                             },
                           );

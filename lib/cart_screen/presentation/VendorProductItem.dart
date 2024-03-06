@@ -5,6 +5,7 @@ import 'package:insta_city_cart/cart_screen/data/remote/deleteCartItem.dart';
 import '../data/remote/editCart.dart';
 
 class VendorProductItemView extends StatefulWidget {
+
   final Product item;
   final VoidCallback refreshCartList;
 
@@ -59,7 +60,8 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
                       children: [
                         Expanded(
                           child: Text(
-                            'widget.item.product.name', // Removed quotes around widget.item.product.name
+                            'widget.item.product.name',
+                            // Removed quotes around widget.item.product.name
                             style: TextStyle(fontSize: 18),
                             maxLines: 1,
                           ),
@@ -89,8 +91,10 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
                 height: 25,
               ),
               onPressed: () {
-                deleteItem();
-              },
+                setState(() {
+                  deleteItem();
+                });
+                    },
             ),
             const SizedBox(height: 10),
             Row(
@@ -151,24 +155,30 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
   Future<void> deleteItem() async {
     try {
       widget.removeItem(widget.item); // Call the callback function to remove the item
+
       await DeleteCartItem.callGraphQLQuery(_currentAmount, widget.item.id);
 
       Fluttertoast.showToast(
         msg: "ITEM HAS DELETED",
-        toastLength: Toast.LENGTH_SHORT, // Duration for which the toast should be visible
-        gravity: ToastGravity.BOTTOM, // Location where the toast should appear
-        backgroundColor: Colors.grey, // Background color of the toast
-        textColor: Colors.white, // Text color of the toast
+        toastLength: Toast.LENGTH_SHORT,
+        // Duration for which the toast should be visible
+        gravity: ToastGravity.BOTTOM,
+        // Location where the toast should appear
+        backgroundColor: Colors.grey,
+        // Background color of the toast
+        textColor: Colors.white,
+        // Text color of the toast
         fontSize: 16.0, // Font size of the toast message
       );
-      widget.refreshCartList(); // Call the refreshCartList method
-      setState(() {}); // Trigger a rebuild of the widget to fetch updated data
+      setState(() {
+        widget.refreshCartList(); // Call the refreshCartList method
+      }); // Trigger a rebuild of the widget to fetch updated data
     } catch (e) {
       print('Failed to delete item: $e');
     }
   }
-  Future<void> increaseAmount() async {
 
+  Future<void> increaseAmount() async {
     _currentAmount++; // Increase the amount
     try {
       await EditCartItemAmount.callGraphQLQuery(_currentAmount, widget.item.id);
@@ -197,7 +207,8 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
 
   Future<void> fetchUpdatedTotalPrice() async {
     try {
-      widget.refreshCartList(); // Call the callback function to refresh the cart list
+      widget
+          .refreshCartList(); // Call the callback function to refresh the cart list
     } catch (e) {
       print('Failed to fetch updated total price: $e');
     }
