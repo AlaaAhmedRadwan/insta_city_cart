@@ -7,7 +7,7 @@ import '../data/remote/editCart.dart';
 class VendorProductItemView extends StatefulWidget {
 
   final Product item;
-  final VoidCallback refreshCartList;
+  final  refreshCartList;
 
   final Function(Product) removeItem; // Adjusted type here
 
@@ -32,9 +32,11 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
   }
 
   void _onAmountUpdated() {
-    widget.refreshCartList(); // Call the refreshCartList method
+    // Call the refreshCartList method
     print('Refreshing cart list...');
-    setState(() {}); // Trigger a rebuild
+    setState(() {
+      widget.refreshCartList();
+    }); // Trigger a rebuild
   }
 
   @override
@@ -183,7 +185,9 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
     try {
       await EditCartItemAmount.callGraphQLQuery(_currentAmount, widget.item.id);
       _onAmountUpdated(); // Call the callback function after successful edit
-      setState(() {}); // Trigger a rebuild of the widget to fetch updated data
+      setState(() {
+        fetchUpdatedTotalPrice();
+      }); // Trigger a rebuild of the widget to fetch updated data
     } catch (e) {
       print('Failed to edit item amount: $e');
     }
@@ -198,7 +202,9 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
           widget.item.id,
         );
         _onAmountUpdated(); // Call the callback function after successful edit
-        setState(() {}); // Trigger a rebuild of the widget to fetch updated data
+        setState(() {
+          fetchUpdatedTotalPrice();
+        }); // Trigger a rebuild of the widget to fetch updated data
       } catch (e) {
         print('Failed to edit item amount: $e');
       }
@@ -207,8 +213,7 @@ class _VendorProductItemViewState extends State<VendorProductItemView> {
 
   Future<void> fetchUpdatedTotalPrice() async {
     try {
-      widget
-          .refreshCartList(); // Call the callback function to refresh the cart list
+      widget.refreshCartList(); // Call the callback function to refresh the cart list
     } catch (e) {
       print('Failed to fetch updated total price: $e');
     }

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../data/models/cart_model.dart';
 import 'VendorProductItem.dart';
-
 class VendorItemView extends StatefulWidget {
   final Cart vendor;
-  final void Function() refreshCartList;
+  final Function() refreshCartList;
   final Function(Product, int) removeItem; // Pass the index along with the item
 
-  const VendorItemView({
+   VendorItemView({
     Key? key,
     required this.vendor,
     required this.refreshCartList,
@@ -66,12 +65,12 @@ class _VendorItemViewState extends State<VendorItemView> {
             ),
             SizedBox(
               height: 150,
-              child: ListView(
-                children: widget.vendor.products.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final item = entry.value;
-                  return buildProductItem(item, index);
-                }).toList(),
+              child: ListView.builder(
+                itemCount: widget.vendor.products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = widget.vendor.products[index];
+                  return buildProductItem(item, index); // Pass the index here
+                },
               ),
             ),
           ],
@@ -85,11 +84,9 @@ class _VendorItemViewState extends State<VendorItemView> {
       item: item,
       refreshCartList: widget.refreshCartList,
       removeItem: (item) {
-        widget.removeItem(item, index); // Pass the index
-        final updatedProducts = List.of(widget.vendor.products); // Create a copy of the list
+        widget.removeItem(item, index); // Pass the index along with the item
         setState(() {
-          updatedProducts.removeAt(index); // Remove the item from the copied list
-          widget.vendor.products = updatedProducts; // Update the state with the modified list
+          widget.vendor.products.removeAt(index); // Remove the item from the list
         });
         print('Item deleted at index $index');
       },

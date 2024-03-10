@@ -62,8 +62,8 @@ class CartScreen extends StatelessWidget {
                               final vendor = cartResponse.carts[vendorIndex];
                               return VendorItemView(
                                 vendor: vendor,
-                                refreshCartList:
-                                    ref.read(refreshNotifier.notifier).refresh, removeItem: (Product , int ) {  },
+                                refreshCartList: () => ref.refresh(refreshNotifier), // Call the refresh method
+                                removeItem: (Product, int) {},
                               );
                             },
                           );
@@ -106,14 +106,16 @@ class TotalOrderContainer extends ConsumerWidget {
                   AsyncSnapshot<Either<Failure, CartResponse>> snapshot) {
                 if (snapshot.hasData) {
                   final cartResponse = snapshot.data!.fold(
-                    (failure) => null,
-                    (cartResponse) => cartResponse,
+                        (failure) => null,
+                        (cartResponse) => cartResponse,
                   );
                   if (cartResponse != null) {
                     final totalOrder = cartResponse.totalOrder;
                     return Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 16.0),
+                        horizontal: 16.0,
+                        vertical: 16.0,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(16.0),
@@ -142,14 +144,12 @@ class TotalOrderContainer extends ConsumerWidget {
                           SizedBox(width: 24.0),
                           // Add some space between the price and the cart icon
                           Spacer(),
-                          Expanded(
-                            child: Text(
-                              totalOrder.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          Text(
+                            totalOrder.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
