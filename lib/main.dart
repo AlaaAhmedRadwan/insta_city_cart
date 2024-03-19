@@ -6,6 +6,8 @@ import 'package:insta_city_cart/cart_screen/presentation/CartScreen.dart';
 
 import 'package:insta_city_cart/cart_screen/data/remote/app_localizations.dart';
 
+import 'checkout_screen/CheckOutScreen.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  CartScreen(),
+      home:  CheckoutScreen(),
     );
   }
 }

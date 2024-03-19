@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta_city_cart/cart_screen/data/remote/app_localizations.dart';
 
-
-  Widget cartAppBarContainer(BuildContext context) {
+  Widget appBarContainer(BuildContext context , String title ) {
     return Padding(
         padding: const EdgeInsets.only(bottom: 0,top: 32),
     child: Container(
@@ -22,7 +21,7 @@ import 'package:insta_city_cart/cart_screen/data/remote/app_localizations.dart';
           Padding(
             padding: const EdgeInsets.only(right: 64.0),
             child: Text(
-              MyAppLocalizations.of(context).title,
+              title,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,

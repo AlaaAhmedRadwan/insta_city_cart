@@ -34,7 +34,7 @@ class CartScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          cartAppBarContainer(context),
+          appBarContainer(context,'Cart'),
           buildAddressContainer(),
           const SizedBox(height: 0),
           Expanded(
@@ -68,7 +68,7 @@ class CartScreen extends StatelessWidget {
                             },
                           );
                         } else {
-                          return Center(
+                          return const Center(
                             child: Text('Failed to fetch data'),
                           );
                         }
@@ -91,10 +91,11 @@ class CartScreen extends StatelessWidget {
 }
 
 class TotalOrderContainer extends ConsumerWidget {
+  const TotalOrderContainer({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           Expanded(
@@ -112,7 +113,7 @@ class TotalOrderContainer extends ConsumerWidget {
                   if (cartResponse != null) {
                     final totalOrder = cartResponse.totalOrder;
                     return Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                         vertical: 16.0,
                       ),
@@ -122,7 +123,7 @@ class TotalOrderContainer extends ConsumerWidget {
                       ),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.shopping_cart,
                             color: Colors.white,
                           ),
@@ -131,9 +132,9 @@ class TotalOrderContainer extends ConsumerWidget {
                             // Adjust the width of the vertical line
                             height: 24.0,
                             color: Colors.white,
-                            margin: EdgeInsets.symmetric(horizontal: 8.0),
+                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
                           ),
-                          Text(
+                          const Text(
                             'Check Out', // Your price text here
                             style: TextStyle(
                               color: Colors.white,
@@ -141,12 +142,12 @@ class TotalOrderContainer extends ConsumerWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 24.0),
+                          const SizedBox(width: 24.0),
                           // Add some space between the price and the cart icon
-                          Spacer(),
+                          const Spacer(),
                           Text(
                             totalOrder.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -156,7 +157,7 @@ class TotalOrderContainer extends ConsumerWidget {
                       ),
                     );
                   } else {
-                    return Text('N/A',
+                    return const Text('N/A',
                         style: TextStyle(color: Colors.black, fontSize: 24));
                   }
                 } else {
